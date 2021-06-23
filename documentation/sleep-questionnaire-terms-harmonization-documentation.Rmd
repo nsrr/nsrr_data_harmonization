@@ -66,26 +66,86 @@ if (data$dataset=="cfs") {
 }
 if (data$dataset=="shhs1") {
   data<-data%>%
-    dplyr::mutate(AvgDurSp_ib_w7_svy=(hrswe02*2+hrswd02*5)*60/7)
+    dplyr::mutate(AvgDurSp_im_w7_svy=(hrswe02*2+hrswd02*5)*60/7)
 } 
 if (data$dataset=="shhs2") {
   data<-data%>%
-    dplyr::mutate(AvgDurSp_ib_w7_svy=(totminslpwe*2+totminslpwd*5)*60/7)
+    dplyr::mutate(AvgDurSp_im_w7_svy=(totminslpwe*2+totminslpwd*5)*60/7)
 }
 if (data$dataset=="ccshs") {
   data<-data%>%
-    dplyr::mutate(AvgDurSp_ib_w7_svy=ysleeptime_s*60)
+    dplyr::mutate(AvgDurSp_im_w7_svy=ysleeptime_s*60)
 }
 if (data$dataset=="mros") {
   data<-data%>%
-    dplyr::mutate(AvgDurSp_ib_w7_svy=pqpactsl*60)
+    dplyr::mutate(AvgDurSp_im_w7_svy=pqpactsl*60)
 }
-if (data$dataset=="mros") {
+if (data$dataset=="wsc") {
   data<-data%>%
-    dplyr::mutate(AvgDurSp_ib_w7_svy=totsleep*60)
+    dplyr::mutate(AvgDurSp_im_w7_svy=totsleep*60)
 }
 ```
 
 #### Average over weekdays
 
+| Harmonized Term   | AvgDurSp_im_w5_svy |
+| ----------- | ----------- |
+| Description| This term is based on self-reported length of actual sleep excluding naps (or naps not specified) averaged over weekdays. The coding **DurSp** implies actual sleep duration which  subtracts wake-in-bed (including waso) from the interval between sleep onset and offset.|
+| Keywords   | hours of sleep do you get on weekdays or work days, excluding naps, at night, in main sleep,or naps not mentioned in the question.|
+| Calculation | Only raw variables can be included.|
+| Coverage   | WSC (all visits), CFS (visit 5), SHHS (1, 2), CCSHS (TREC)|
+| Decisions | Convert variables in unit of hour to minute by multiplying 60. |
+```{r, echo=T, eval=F}
+if (data$dataset=="cfs") {
+  data<-data%>%
+    dplyr::mutate(AvgDurSp_im_w7_svy=dayhrs*60+daymin)
+}
+if (data$dataset=="shhs1") {
+  data<-data%>%
+    dplyr::mutate(AvgDurSp_im_w7_svy=hrswd02*60)
+} 
+if (data$dataset=="shhs2") {
+  data<-data%>%
+    dplyr::mutate(AvgDurSp_im_w7_svy=totminslpwd*60)
+}
+if (data$dataset=="ccshs") {
+  data<-data%>%
+    dplyr::mutate(AvgDurSp_im_w7_svy=ywd_slpdur)
+}
+if (data$dataset=="wsc") {
+  data<-data%>%
+    dplyr::mutate(AvgDurSp_im_w7_svy=workday*60)
+}
+```
+
 #### Average over weekends
+
+| Harmonized Term   | AvgDurSp_im_w2_svy |
+| ----------- | ----------- |
+| Description| This term is based on self-reported length of actual sleep excluding naps (or naps not specified) averaged over weekends. The coding **DurSp** implies actual sleep duration which  subtracts wake-in-bed (including waso) from the interval between sleep onset and offset.|
+| Keywords   | hours of sleep do you get on weekends or non-work days, excluding naps, at night, in main sleep,or naps not mentioned in the question.|
+| Calculation | Only raw variables can be included.|
+| Coverage   | WSC (all visits), CFS (visit 5), SHHS (1, 2), CCSHS (TREC)|
+| Decisions | Convert variables in unit of hour to minute by multiplying 60. |
+```{r, echo=T, eval=F}
+if (data$dataset=="cfs") {
+  data<-data%>%
+    dplyr::mutate(AvgDurSp_im_w7_svy=endhrs*60+endmin)
+}
+if (data$dataset=="shhs1") {
+  data<-data%>%
+    dplyr::mutate(AvgDurSp_im_w7_svy=hrswe02*60)
+} 
+if (data$dataset=="shhs2") {
+  data<-data%>%
+    dplyr::mutate(AvgDurSp_im_w7_svy=totminslpwe*60)
+}
+if (data$dataset=="ccshs") {
+  data<-data%>%
+    dplyr::mutate(AvgDurSp_im_w7_svy=ywe_slpdur)
+}
+if (data$dataset=="wsc") {
+  data<-data%>%
+    dplyr::mutate(AvgDurSp_im_w7_svy=weekend*60)
+}
+```
