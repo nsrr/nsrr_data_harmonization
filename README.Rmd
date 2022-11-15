@@ -1,0 +1,181 @@
+---
+title: An introduction to the NSRR harmonized variable documentation
+author: Ying Zhang
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  github_document
+---
+
+```{r setup, echo = FALSE}
+options(knitr.table.format = 'html')
+knitr::opts_chunk$set(message = FALSE)
+```
+
+This repository contains documentation for the phenotype, sleep monitoring (e.g. polysomnography, polygraphy, actigraphy) and survey questionnaire data harmonized by the [National Sleep Research Resource (NSRR)](https://www.sleepdata.org/), including harmonization standards, rationale, and  script for recreating the harmonized data.
+
+## Repository contents
+
+| file | description  |
+|---|---|
+| `non-sleep-phenotype/`               | A directory containing documentations for harmonized non-sleep covariates. |
+| `sleep-monitoring/` | A directory containing documentations and script for creating harmonized sleep monitoring data. |
+| `sleep-questionnaire/`            |  A directory containing documentations and script for creating harmonized sleep questionnaire data.  |
+| `README.md`  | This document. |
+| `README.Rmd`  | Source for this document. |
+
+__Table of Contents__
+
+- [Overview](#overview)
+- [Non-Sleep Phenotype Data](#non-sleep-phenotype-data)
+- [Polysomnography and Polygraphy Data](#polysomnography-and-polygraphy-data)
+- [Sleep Questionnaire Data](#sleep-questionnaire-data)
+
+- [Resources](#resources)
+
+---
+
+## Overview
+The objectives for data harmonization is (1) to identify core sleep terms that are semantically similar, (2) to assess the heterogeneity in the study-level and variable-level metadata, (3) to improve comparability of the harmonized terms, and (4) to make harmonized terms inferentially equivalent when possible. We identified three types of data currently shared on the NSRR website that are most likely to be valuable to our users once harmonized - commonly used non-sleep covariates, sleep monitoring data (e.g.,polysomnography/polygraphy) and sleep questionnaire data. We've developed domain-specific approach to address the challenges in harmonizing each of these types of data.
+Harmonized data were created using SAS and saved as a separate data file in each dataset on NSRR website. All SAS scripts are  publicly available on [github.com/nsrr](https://github.com/nsrr).
+
+
+## Non-Sleep Phenotype Data
+[TOPMed DCC's harmonized phenotype](https://github.com/UW-GAC/topmed-dcc-harmonized-phenotypes) and [BioDataCatalyst Common Data Model](https://github.com/uc-cdis/gtex-dictionary/tree/master/gdcdictionary/schemas/) were identified as the harmonization standards for the non-sleep phenotype data. We have harmonized 9 non-sleep phenotype variables: age(`nsrr_age`), sex(`nsrr_sex`), race(`nsrr_race`), ethnicity(`nsrr_ethnicity`), body mass index(`nsrr_bmi`), current smoker(`nsrr_current_smoker`), ever smoker(`nsrr_ever_smoker`), resting systolic(`nsrr_bp_systolic`) and diastolic blood pressure(`nsrr_bp_diastolic`). 
+
+### Data format
+The original data format was preserved for numeric variables; Categorical variables (e.g., sex, race) were recoded as string. All permissible values for the harmonized categorical variables are available as JSON files in `non-sleep-phenotype/`.
+
+### Missing value
+For numerical variables, missing values were represented as empty cell value in the date files. For categorical variables, explicit missing codes were used to comply with the TopMED/BioDataCatalyst harmonization standards. Unspecific missing was coded as "not reported" for most categorical variables.
+
+## Polysomnography and Polygraphy Data
+Retrospective polysomnography/Polygraph (PSG) data harmonization focuses on summary PSG data submitted by the data owners, which was either manually scored by scorers or automatically scored by the device. Prospective PSG data harmonization using EDF files can be done by the NSRR [NAP pipeline](https://zzz.bwh.harvard.edu/luna/nap/).
+We've identified 5 PSG terms to harmonize: AHI3%, AHI4%, total sleep duration, overall arousal index and sleep/wake signal quality flag.
+
+### Apnea-hypopnea Indices
+After carefully evaluating the main sources of heterogeneity in PSG data generation and processing across datasets, we've identified four varying components in the metadata - sleep test type (i.e., type I or II polysomnography, type III or IV polygraphy/home sleep apnea test), flow reduction, oxygen desaturation, and arousal. Here is a diagram for how commonly referred to as AHI3% and AHI4% can vary in the these categories and create many more permutations.
+
+```{r,echo=FALSE}
+library(DiagrammeR)
+grViz("
+digraph boxes_and_circles {
+
+  # a 'graph' statement
+  graph [overlap = true, fontsize = 10]
+
+  # 'node' statements
+  node [shape = box,
+        fontname = Helvetica]
+  type_I_II[label = 'Polysomnography (Type I or II)'];type_III_IV[label = 'Polygraphy/HSAT (Type III or IV)'];
+  ahi[label = 'Apnea-Hypopnea Index'];rei[label = 'Respiratory Event Index'];ap[label = 'Apneas'];hp[label = 'Hypopneas'];
+  flow_90[label = '>=90% flow reduction'];
+  flow_50[label = '>=50% flow reduction'];flow_30[label = '>=30% flow reduction'];flow_0[label = '>50% flow reduction\n or discernible flow reduction'];
+  desat_3[label = '>=3% oxygen desat'];desat_4[label = '>=4% oxygen desat'];desat_03[label = '>=3% oxygen desat'];
+  arousal_or[label = 'or with arousal'];arousal_un[label = 'w/ or w/o arousal'];arousal_0[label = 'or with arousal'];
+  
+  # 'edge' statements
+  edge [color = grey, arrowhead = none, arrowtail = none]
+  type_I_II->ahi type_III_IV->rei ahi->ap rei->ap ap->flow_90 flow_90->hp
+  hp->flow_50 hp->flow_30 hp->flow_0
+  flow_50->desat_3 flow_50->desat_4 flow_30->desat_3 flow_30->desat_4 flow_0->desat_03
+  desat_3->arousal_or desat_3->arousal_un desat_4->arousal_or desat_4->arousal_un desat_03->arousal_0
+}
+")
+```
+Among the 13 permutations of AHI3% and AHI4% as illustrated in the diagram above, we've mapped a subset of them to the American Academy of Sleep Medicine (AASM) Clinical Guidelines and consolidated into 10 harmonized variables - 7 AHIs and 3 REIs.
+
+| Year | Version  | Definition for Hypopnea Events | Event Duration | Reduction Duration Criteria | Consolidated Coding |
+|---|---|---|---|---|---|
+| 1999 |   | >50% nasal cannula reduction or discernible nasal cannula reduction with (>=3% desat or arousal) | >=10 sec | | chicago1999 |
+| 2007 | Recommended | >=30% nasal cannula [or alternative sensor] reduction with >=4% desat | >=10 sec | >=90% of the event duration | same as hp4u_aasm15 |
+| 2007 | Alternative | >=50% nasal cannula [or alternative sensor] reduction with  (>=3% desat or arousal) |  >=10 sec | >=90% of the event duration | hp3r_aasm07 |
+| 2012 | Recommended | >=30% nasal cannula [or alternative sensor] reduction with  (>=3% desat or arousal) |  >=10 sec | >=10 sec | same as hp3r_aasm15 |
+| 2012 | Alternative | >=30% nasal cannula [or alternative sensor] reduction  with >=4% desat |  >=10 sec | >=10 sec | same as hp4u_aasm15 |
+| 2015 | Recommended | >=30% nasal cannula [or alternative sensor] reduction with (>=3% desat or arousal) |  >=10 sec | >=10 sec | hp3r_aasm15 |
+| 2015 | Acceptable | >=30% nasal cannula [or alternative sensor] reduction with (>=4% desat) |  >=10 sec | >=10 sec | hp4u_aasm15 |
+
+
+```{r,echo=FALSE}
+library(DiagrammeR)
+
+grViz("
+digraph boxes_and_circles {
+
+  graph [overlap = true, fontsize = 15,layout = dot, rankdir = LR]
+
+  node [shape = box,
+        fixedsize = FALSE,
+        fontname = Helvetica]
+  ahi[label = 'Apnea-Hypopnea Index'];
+  ahi_5x[label = '>=50% flow reduction']; ahi_3x[label = '>=30% flow reduction']; ahi_5x_0x[label = '>50% flow reduction\n or discernible flow reduction']; 
+  ahi_5x3[label = '>=3% desat']; ahi_5x4[label = '>=4% desat']; ahi_3x3[label = '>=3% desat']; ahi_3x4[label = '>=4% desat'];
+  ahi_5x0_0x3[label = '>=3% desat']; 
+  ahi_5x3u[label = 'w/ or w/o arousal'];ahi_5x3r[label = 'or with arousal'];ahi_5x4u[label = 'w/ or w/o arousal'];ahi_5x4r[label = 'or with arousal'];ahi_3x3u[label = 'w/ or w/o arousal'];ahi_3x3r[label = 'or with arousal'];ahi_3x4u[label = 'w/ or w/o arousal'];ahi_3x4r[label = 'or with arousal'];ahi_5x0u_0x3r[label = 'or with arousal']; 
+   node [shape = oval,
+        fixedsize = FALSE,
+        fillcolor=grey,
+        width = 2.5] 
+  tag_hp3u[label = 'nsrr_ahi_hp3u',fillcolor=grey, style=filled];tag_hp3r_aasm07[label = 'nsrr_ahi_hp3r_aasm07',fillcolor=grey, style=filled];tag_hp4u[label = 'nsrr_ahi_hp4u',fillcolor=grey, style=filled];tag_hp4r[label = 'nsrr_ahi_hp4r',fillcolor=grey, style=filled];tag_hp3r_aasm15[label = 'nsrr_ahi_hp3r_aasm15',fillcolor=grey, style=filled];tag_hp4u_aasm15[label = 'nsrr_ahi_hp4u_aasm15',fillcolor=grey, style=filled];tag_chicago1999[label = 'nsrr_ahi_chicago1999',fillcolor=grey, style=filled];
+
+  ahi->{ahi_5x ahi_3x ahi_5x_0x}
+  ahi_5x->{ahi_5x3 ahi_5x4} ahi_3x->{ahi_3x3 ahi_3x4} ahi_5x_0x->ahi_5x0_0x3
+  ahi_5x3->{ahi_5x3u ahi_5x3r} ahi_5x4->{ahi_5x4u ahi_5x4r} ahi_3x3->{ahi_3x3u ahi_3x3r} ahi_3x4->{ahi_3x4u ahi_3x4r} ahi_5x0_0x3->ahi_5x0u_0x3r
+ ahi_5x3u->tag_hp3u ahi_5x3r->tag_hp3r_aasm07 ahi_5x4u->tag_hp4u ahi_5x4r->tag_hp4r ahi_3x3u->tag_hp3u ahi_3x3r->tag_hp3r_aasm15 ahi_3x4u->tag_hp4u_aasm15 ahi_3x4r->tag_hp4r ahi_5x0u_0x3r->tag_chicago1999 
+}
+")
+```
+
+```{r,echo=FALSE}
+grViz("
+digraph boxes_and_circles {
+
+  graph [overlap = true, fontsize = 15,layout = dot, rankdir = LR]
+
+  node [shape = box,
+        fixedsize = FALSE,
+        fontname = Helvetica]
+  rei[label = 'Respiratory Event Index'];
+  rei_5x[label = '>=50% flow reduction'];rei_3x[label = '>=30% flow reduction'];
+  rei_5x3[label = '>=3% desat'];rei_5x4[label = '>=4% desat'];rei_3x3[label = '>=3% desat'];rei_3x4[label = '>=4% desat'];
+
+  node [shape = oval,
+        fixedsize = FALSE,
+        fillcolor=grey,
+        width = 2.5] 
+  tag_rei_hp3u[label = 'nsrr_rei_hp3u',fillcolor=grey, style=filled];tag_rei_hp4u[label = 'nsrr_rei_hp4u',fillcolor=grey, style=filled];tag_rei_hp4u_aasm15[label = 'nsrr_rei_hp4u_aasm15',fillcolor=grey, style=filled];
+
+  rei->{rei_5x rei_3x}
+  rei_5x->{rei_5x3 rei_5x4} rei_3x->{rei_3x3 rei_3x4}
+  rei_5x3->tag_rei_hp3u rei_5x4->tag_rei_hp4u rei_3x3->tag_rei_hp3u rei_3x4->tag_rei_hp4u_aasm15
+}
+")
+```
+
+Harmonized AHI/REI terms are shown in grey circles in the diagram above, and can be searched on the NSRR website. Links to the source variables are available in the metadata.
+
+### Total Sleep Duration
+
+Total sleep duration (i.e., total sleep time) is defined as the interval between sleep onset and offset while the subject was asleep, which is an important measure used in calculating various indices. However, depending on the context and usage, “time” might refer to a specific point in time or to an interval between two time points,while “duration” and “period” could both be taken to correspond to intervals, they were often used interchangeably in protocol descriptions and data dictionaries without any indication of whether they referred to intervals between designated time points or to specific intervals when subjects were determined to be awake or asleep.Therefore, we've developed a set of standardized terms to address the challenges of "time", "period", "duration" being used inconsistently at the NSRR metadata documentation.
+
+```{r,echo=FALSE}
+mermaid("
+sequenceDiagram
+  Recording start time->>Inbed time: Lights on
+  Inbed time->>Sleep onset: Sleep onset latency
+  Sleep onset->>Wake: Sleep duration
+  Wake->>Fall back to sleep: WASO
+  Fall back to sleep->>Sleep offset: Sleep duration
+  Sleep offset->>Outbed time: Snooze
+  Outbed time->>Recording end time: Lights on
+  Sleep onset->>Sleep offset: Sleep period
+  Inbed time->>Outbed time: Inbed period
+  Recording start time->>Recording end time: Recording period
+")
+```
+
+### Overall Arousal Index
+
+### Sleep/Wake Signal Quality Flag
+We've selected sleep/wake signal quality flag for it's commonly misunderstood and misused by the NSRR users. When the EEG is insufficient in quality to allow distinction of sleep stages, all sleep stages were scored using a default of “Stage 2” and no arousal was scored. Studies and individuals with "sleep/wake only " instead of "full scoring" for `nsrr_flag_spsw` should not be used to analyze sleep architecture or arousals.
+
+## Sleep Questionnaire Data

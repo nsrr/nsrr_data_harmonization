@@ -23,7 +23,7 @@ in-bed period vs sleep period.
 
 ### Self-reported 24 hour habitual sleep averaged over 7 days
 
-| Harmonized Term | AvgDurSp\_ib\_w7\_svy                                                                                                                                                                                                                             |
+| Harmonized Term | AvgDurSp_ib_w7_svy                                                                                                                                                                                                                                |
 |-----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description     | This term is based on self-reported length of actual sleep including naps averaged over 7 days. The coding **DurSp** implies actual sleep duration which subtracts wake-in-bed (including waso) from the interval between sleep onset and offset. |
 | Keywords        | hours of sleep do you get, including naps, 24-hour period, actual sleep, etc.                                                                                                                                                                     |
@@ -55,7 +55,7 @@ if (data$dataset=="wsc") {
 
 #### Average over 7 days
 
-| Harmonized Term | AvgDurSp\_im\_w7\_svy                                                                                                                                                                                                                                                     |
+| Harmonized Term | AvgDurSp_im_w7_svy                                                                                                                                                                                                                                                        |
 |-----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description     | This term is based on self-reported length of actual sleep excluding naps (or naps not specified) averaged over 7 days. The coding **DurSp** implies actual sleep duration which subtracts wake-in-bed (including waso) from the interval between sleep onset and offset. |
 | Keywords        | hours of sleep do you get, excluding naps, at night, in main sleep,or naps not mentioned in the question.                                                                                                                                                                 |
@@ -92,7 +92,7 @@ if (data$dataset=="wsc") {
 
 #### Average over weekdays
 
-| Harmonized Term | AvgDurSp\_im\_w5\_svy                                                                                                                                                                                                                                                       |
+| Harmonized Term | AvgDurSp_im_w5_svy                                                                                                                                                                                                                                                          |
 |-----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description     | This term is based on self-reported length of actual sleep excluding naps (or naps not specified) averaged over weekdays. The coding **DurSp** implies actual sleep duration which subtracts wake-in-bed (including waso) from the interval between sleep onset and offset. |
 | Keywords        | hours of sleep do you get on weekdays or work days, excluding naps, at night, in main sleep,or naps not mentioned in the question.                                                                                                                                          |
@@ -125,7 +125,7 @@ if (data$dataset=="wsc") {
 
 #### Average over weekends
 
-| Harmonized Term | AvgDurSp\_im\_w2\_svy                                                                                                                                                                                                                                                       |
+| Harmonized Term | AvgDurSp_im_w2_svy                                                                                                                                                                                                                                                          |
 |-----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description     | This term is based on self-reported length of actual sleep excluding naps (or naps not specified) averaged over weekends. The coding **DurSp** implies actual sleep duration which subtracts wake-in-bed (including waso) from the interval between sleep onset and offset. |
 | Keywords        | hours of sleep do you get on weekends or non-work days, excluding naps, at night, in main sleep,or naps not mentioned in the question.                                                                                                                                      |
