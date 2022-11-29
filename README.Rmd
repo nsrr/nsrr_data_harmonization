@@ -38,6 +38,7 @@ __Table of Contents__
 The objectives for data harmonization is (1) to identify core sleep terms that are semantically similar, (2) to assess the heterogeneity in the study-level and variable-level metadata, (3) to improve comparability of the harmonized terms, and (4) to make harmonized terms inferentially equivalent when possible. We identified three types of data currently shared on the NSRR website that are most likely to be valuable to our users once harmonized - commonly used non-sleep covariates, sleep monitoring data (e.g.,polysomnography/polygraphy) and sleep questionnaire data. We've developed domain-specific approach to address the challenges in harmonizing each of these types of data.
 Harmonized data were created using SAS and saved as a separate data file in each dataset on NSRR website. All SAS scripts are  publicly available on [github.com/nsrr](https://github.com/nsrr).
 
+It is worth noting that the current harmonization process is not data-driven but NSRR is planning on assessing how similar harmonized data is across demographically similar datasets.
 
 ## Non-Sleep Phenotype Data
 [TOPMed DCC's harmonized phenotype](https://github.com/UW-GAC/topmed-dcc-harmonized-phenotypes) and [BioDataCatalyst Common Data Model](https://github.com/uc-cdis/gtex-dictionary/tree/master/gdcdictionary/schemas/) were identified as the harmonization standards for the non-sleep phenotype data. We have harmonized 9 non-sleep phenotype variables: age(`nsrr_age`), sex(`nsrr_sex`), race(`nsrr_race`), ethnicity(`nsrr_ethnicity`), body mass index(`nsrr_bmi`), current smoker(`nsrr_current_smoker`), ever smoker(`nsrr_ever_smoker`), resting systolic(`nsrr_bp_systolic`) and diastolic blood pressure(`nsrr_bp_diastolic`). 
@@ -155,7 +156,7 @@ Harmonized AHI/REI terms are shown in grey circles in the diagram above, and can
 
 ### Total Sleep Duration
 
-Total sleep duration (i.e., total sleep time) is defined as the interval between sleep onset and offset while the subject was asleep, which is an important measure used in calculating various indices. However, depending on the context and usage, “time” might refer to a specific point in time or to an interval between two time points,while “duration” and “period” could both be taken to correspond to intervals, they were often used interchangeably in protocol descriptions and data dictionaries without any indication of whether they referred to intervals between designated time points or to specific intervals when subjects were determined to be awake or asleep.Therefore, we've developed a set of standardized terms to address the challenges of "time", "period", "duration" being used inconsistently at the NSRR metadata documentation.
+The terms to describe time intervals versus points of time are one of the major sources of confusion and ambiguity in PSG sleep architecture metadata. Depending on the context and usage, “time” might refer to a specific point in time or to an interval between two time points (e.g., study start time versus total sleep time), while “duration” and “period” could both be taken to correspond to intervals, they were often used interchangeably in protocol descriptions and data dictionaries without any indication of whether they referred to intervals between designated time points or to specific intervals when subjects were determined to be awake or asleep. Therefore, we've developed a set of standardized terms to address the challenges of "time", "period", "duration" being used inconsistently at the NSRR metadata documentation internally.
 
 ```{r,echo=FALSE}
 mermaid("
@@ -173,7 +174,10 @@ sequenceDiagram
 ")
 ```
 
+Total sleep duration (i.e., total sleep time) is defined as the interval between sleep onset and offset while the subject was asleep, which is an important measure used in calculating various indices. Among studies with type I/II polysomnography data, we've mapped all total sleep duration and created a harmonized variable `nsrr_ttldursp_f1` in which `f1` refers to the source of data (i.e.,f1=polysomnography/polygraphy, f2=actigraphy, f3=sleep questionnaire).
+
 ### Overall Arousal Index
+Overall arousal index is defined as the total number of arousal divided by the total sleep duration (i.e., total sleep time). We've mapped all overall arousal index from datasets with type I/II polysomnography and created a harmonized variable `nsrr_phrnumar_f1`.
 
 ### Sleep/Wake Signal Quality Flag
 We've selected sleep/wake signal quality flag for it's commonly misunderstood and misused by the NSRR users. When the EEG is insufficient in quality to allow distinction of sleep stages, all sleep stages were scored using a default of “Stage 2” and no arousal was scored. Studies and individuals with "sleep/wake only " instead of "full scoring" for `nsrr_flag_spsw` should not be used to analyze sleep architecture or arousals.
