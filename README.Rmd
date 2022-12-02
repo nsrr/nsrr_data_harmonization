@@ -6,7 +6,9 @@ output:
   github_document
 ---
 
-```{r setup, echo = FALSE}
+```{r setup,  include=FALSE}
+library(nomnoml)
+library(DiagrammeR)
 options(knitr.table.format = 'html')
 knitr::opts_chunk$set(message = FALSE)
 ```
@@ -50,14 +52,60 @@ The original data format was preserved for numeric variables; Categorical variab
 For numerical variables, missing values were represented as empty cell value in the date files. For categorical variables, explicit missing codes were used to comply with the TopMED/BioDataCatalyst harmonization standards. Unspecific missing was coded as "not reported" for most categorical variables.
 
 ## Polysomnography and Polygraphy Data
-Retrospective polysomnography/Polygraph (PSG) data harmonization focuses on summary PSG data submitted by the data owners, which was either manually scored by scorers or automatically scored by the device. Prospective PSG data harmonization using EDF files can be done by the NSRR [NAP pipeline](https://zzz.bwh.harvard.edu/luna/nap/).
-We've identified 5 PSG terms to harmonize: AHI3%, AHI4%, total sleep duration, overall arousal index and sleep/wake signal quality flag.
+Retrospective polysomnography/Polygraph (PSG) data harmonization focuses on summary PSG data submitted by the data owners, which was either manually scored by scorers or automatically scored by the device. Prospective PSG data harmonization using EDF files can be done by the NSRR [NAP pipeline](https://zzz.bwh.harvard.edu/luna/nap/). As illustrated in the process diagram down below, we took an iterative approach when developing harmonized summary PSG terms. We first identified the initial target terms (e.g., AHI3%, AHI4%, total sleep duration, overall arousal index and sleep/wake signal quality flag). We then mapped out the key steps in the data generation process which tend to be the major sources of heterogeneity. After identifying all the varying components in the study-level and variable-level metadata that greatly affect the comparability of the data, we went back to the initial target terms and decided whether (and how) we would need to expand the target terms to accommodate all the heterogeneity. We then mapped the deposited data at the NSRR to the refined target terms and assessed if there were any additional sources of heterogeneity that should be accounted for. We also standardized the metadata for the target terms during the process which includes harmonized term definitions, provenance information (how to document the source data and any processing of the source data), as well as the standardized NSRR tags for "forward-compatible" harmonization.
+
+```{nomnoml echo=F}
+#stroke: #16733e
+#direction: down
+#.box: fill=#8f8 dashed visual=ellipse direction=right
+#zoom: 1
+[<frame>Development of Harmonized Terms|
+  [Identify|Target term(s)]
+  [Outline| Data generation process]
+  [Identify] -:> [Outline]
+  [Assess| Source of heterogeneity]
+  [Outline]-:>[Assess]
+  [Study-level| e.g. sleep test type]
+  [Variable-level| e.g.%desat]
+  [Assess]+->  [Study-level]
+  [Assess]+->  [Variable-level]
+  [Refine| Target term(s)]
+  [Study-level]o->[Refine]
+  [Variable-level]o->[Refine]
+  [Map| Deposited Data]
+  [Map]<:--[Refine]
+  [Map]--:>[Assess]
+  [Refine]-[<note>Standardized metadata||- Definition|- Provenance|- NSRR tags]
+]
+```
+Using the NSRR tags, we are able to leverage data/metadata curation that we do routinely at NSRR to quickly map and create harmonized data. As shown in the diagram down below, once the raw data is curated and assigned a NSRR tag based on a compositional coding scheme, we can simply search if any of the eligible tags listed by the harmonized term(s) metadata is present in the dataset. Once there is a match, we will conduct an in-depth review of all the associated metadata to make sure the harmonized term(s) are mapped correctly, and create a harmonized version with new variable name and metadata once the mapping is confirmed.
+
+```{nomnoml echo=F}
+#stroke: #16733e
+#direction: down
+#zoom: 1
+[<frame>Harmonizing Data|
+  [Raw Data]
+  [<abstract>Study-level Metadata|- NSRR metadata intake form|- DMP|...]
+  [<abstract>Variable-level Metadata|- Data dictionary|- Codebook|...]
+  [Curated Data||NSRR tags|- Standardized|- Compositional|- Expandable|- Machine-readable]
+  [Raw Data]-:>[Curated Data]
+  [Curated Data]<--incorperate[Study-level Metadata]
+  [Curated Data]<--incorperate[Variable-level Metadata]
+  [Harmonized Term||Eligible NSRR tags|- tag1|- tag2|...]
+  [Matched Variables|var_name:tag2]
+  [Curated Data]-:>[Matched Variables]
+  [Harmonized Term]map-->[Matched Variables]
+  [Matched Variables]-:>[Review Metadata]
+  [Review Metadata]-:>[Create Harmonized Data|- Recoding|- Renaming(nsrr_var)|- Standardizing metadata]
+]
+```
+
 
 ### Apnea-hypopnea Indices
 After carefully evaluating the main sources of heterogeneity in PSG data generation and processing across datasets, we've identified four varying components in the metadata - sleep test type (i.e., type I or II polysomnography, type III or IV polygraphy/home sleep apnea test), flow reduction, oxygen desaturation, and arousal. Here is a diagram for how commonly referred to as AHI3% and AHI4% can vary in the these categories and create many more permutations.
 
 ```{r,echo=FALSE}
-library(DiagrammeR)
 grViz("
 digraph boxes_and_circles {
 
@@ -154,6 +202,16 @@ digraph boxes_and_circles {
 
 Harmonized AHI/REI terms are shown in grey circles in the diagram above, and can be searched on the NSRR website. Links to the source variables are available in the metadata.
 
+| Harmonized terms | Eligible NSRR tags |
+|---|---|
+| nsrr_ahi_hp3u |ahi_ap0uhp5x3u_f1t1, ahi_ap0uhp5x3u_f1t2, ahi_ap0uhp3x3u_f1t1, ahi_ap0uhp3x3u_f1t2|
+| nsrr_ahi_hp3r_aasm07 |ahi_ap0uhp5x3r_f1t1, ahi_ap0uhp5x3r_f1t2|
+| nsrr_ahi_hp3r_aasm15 |ahi_ap0uhp3x3r_f1t1, ahi_ap0uhp3x3r_f1t2|
+| nsrr_ahi_hp4u |ahi_ap0uhp5x4u_f1t1, ahi_ap0uhp5x4u_f1t2   |
+| nsrr_ahi_hp4u_aasm15 |ahi_ap0uhp3x4u_f1t1, ahi_ap0uhp3x4u_f1t2   |
+| nsrr_ahi_hp4r |ahi_ap0uhp5x4r_f1t1,ahi_ap0uhp5x4r_f1t2, ahi_ap0uhp3x4r_f1t1, ahi_ap0uhp3x4r_f1t2|
+| nsrr_ahi_chicago1999 |ahi_ap0uhp5x0u_ap0uhp0x3r_f1t1, ahi_ap0uhp5x0u_ap0uhp0x3r_f1t2|
+
 ### Total Sleep Duration
 
 The terms to describe time intervals versus points of time are one of the major sources of confusion and ambiguity in PSG sleep architecture metadata. Depending on the context and usage, “time” might refer to a specific point in time or to an interval between two time points (e.g., study start time versus total sleep time), while “duration” and “period” could both be taken to correspond to intervals, they were often used interchangeably in protocol descriptions and data dictionaries without any indication of whether they referred to intervals between designated time points or to specific intervals when subjects were determined to be awake or asleep. Therefore, we've developed a set of standardized terms to address the challenges of "time", "period", "duration" being used inconsistently at the NSRR metadata documentation internally.
@@ -176,8 +234,16 @@ sequenceDiagram
 
 Total sleep duration (i.e., total sleep time) is defined as the interval between sleep onset and offset while the subject was asleep, which is an important measure used in calculating various indices. Among studies with type I/II polysomnography data, we've mapped all total sleep duration and created a harmonized variable `nsrr_ttldursp_f1` in which `f1` refers to the source of data (i.e.,f1=polysomnography/polygraphy, f2=actigraphy, f3=sleep questionnaire).
 
+| Harmonized terms | Eligible NSRR tags |
+|---|---|
+|nsrr_ttldursp_f1|ttldursp_f1t1, ttldursp_f1t2, ttldursp_f1t3|
+
 ### Overall Arousal Index
 Overall arousal index is defined as the total number of arousal divided by the total sleep duration (i.e., total sleep time). We've mapped all overall arousal index from datasets with type I/II polysomnography and created a harmonized variable `nsrr_phrnumar_f1`.
+
+| Harmonized terms | Eligible NSRR tags |
+|---|---|
+|nsrr_phrnumar_f1| phrnumar_f1t1, phrnumar_f1t2|
 
 ### Sleep/Wake Signal Quality Flag
 We've selected sleep/wake signal quality flag for it's commonly misunderstood and misused by the NSRR users. When the EEG is insufficient in quality to allow distinction of sleep stages, all sleep stages were scored using a default of “Stage 2” and no arousal was scored. Studies and individuals with "sleep/wake only " instead of "full scoring" for `nsrr_flag_spsw` should not be used to analyze sleep architecture or arousals.

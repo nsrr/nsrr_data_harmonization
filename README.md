@@ -1,7 +1,7 @@
 An introduction to the NSRR harmonized variable documentation
 ================
 Ying Zhang
-29 November, 2022
+02 December, 2022
 
 This repository contains documentation for the phenotype, sleep
 monitoring (e.g. polysomnography, polygraphy, actigraphy) and survey
@@ -89,9 +89,37 @@ Retrospective polysomnography/Polygraph (PSG) data harmonization focuses
 on summary PSG data submitted by the data owners, which was either
 manually scored by scorers or automatically scored by the device.
 Prospective PSG data harmonization using EDF files can be done by the
-NSRR [NAP pipeline](https://zzz.bwh.harvard.edu/luna/nap/). We’ve
-identified 5 PSG terms to harmonize: AHI3%, AHI4%, total sleep duration,
-overall arousal index and sleep/wake signal quality flag.
+NSRR [NAP pipeline](https://zzz.bwh.harvard.edu/luna/nap/). As
+illustrated in the process diagram down below, we took an iterative
+approach when developing harmonized summary PSG terms. We first
+identified the initial target terms (e.g., AHI3%, AHI4%, total sleep
+duration, overall arousal index and sleep/wake signal quality flag). We
+then mapped out the key steps in the data generation process which tend
+to be the major sources of heterogeneity. After identifying all the
+varying components in the study-level and variable-level metadata that
+greatly affect the comparability of the data, we went back to the
+initial target terms and decided whether (and how) we would need to
+expand the target terms to accommodate all the heterogeneity. We then
+mapped the deposited data at the NSRR to the refined target terms and
+assessed if there were any additional sources of heterogeneity that
+should be accounted for. We also standardized the metadata for the
+target terms during the process which includes harmonized term
+definitions, provenance information (how to document the source data and
+any processing of the source data), as well as the standardized NSRR
+tags for “forward-compatible” harmonization.
+
+![](README_files/figure-gfm/unnamed-chunk-1-1.png)<!-- --> Using the
+NSRR tags, we are able to leverage data/metadata curation that we do
+routinely at NSRR to quickly map and create harmonized data. As shown in
+the diagram down below, once the raw data is curated and assigned a NSRR
+tag based on a compositional coding scheme, we can simply search if any
+of the eligible tags listed by the harmonized term(s) metadata is
+present in the dataset. Once there is a match, we will conduct an
+in-depth review of all the associated metadata to make sure the
+harmonized term(s) are mapped correctly, and create a harmonized version
+with new variable name and metadata once the mapping is confirmed.
+
+![](README_files/figure-gfm/unnamed-chunk-2-2.png)<!-- -->
 
 ### Apnea-hypopnea Indices
 
@@ -103,7 +131,7 @@ reduction, oxygen desaturation, and arousal. Here is a diagram for how
 commonly referred to as AHI3% and AHI4% can vary in the these categories
 and create many more permutations.
 
-![](README_files/figure-gfm/unnamed-chunk-1-1.png)<!-- --> Among the 13
+![](README_files/figure-gfm/unnamed-chunk-3-3.png)<!-- --> Among the 13
 permutations of AHI3% and AHI4% as illustrated in the diagram above,
 we’ve mapped a subset of them to the American Academy of Sleep Medicine
 (AASM) Clinical Guidelines and consolidated into 10 harmonized
@@ -119,13 +147,23 @@ variables - 7 AHIs and 3 REIs.
 | 2015 | Recommended | \>=30% nasal cannula \[or alternative sensor\] reduction with (\>=3% desat or arousal)             | \>=10 sec      | \>=10 sec                    | hp3r_aasm15         |
 | 2015 | Acceptable  | \>=30% nasal cannula \[or alternative sensor\] reduction with (\>=4% desat)                        | \>=10 sec      | \>=10 sec                    | hp4u_aasm15         |
 
-![](README_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
-![](README_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 Harmonized AHI/REI terms are shown in grey circles in the diagram above,
 and can be searched on the NSRR website. Links to the source variables
 are available in the metadata.
+
+| Harmonized terms     | Eligible NSRR tags                                                                 |
+|----------------------|------------------------------------------------------------------------------------|
+| nsrr_ahi_hp3u        | ahi_ap0uhp5x3u_f1t1, ahi_ap0uhp5x3u_f1t2, ahi_ap0uhp3x3u_f1t1, ahi_ap0uhp3x3u_f1t2 |
+| nsrr_ahi_hp3r_aasm07 | ahi_ap0uhp5x3r_f1t1, ahi_ap0uhp5x3r_f1t2                                           |
+| nsrr_ahi_hp3r_aasm15 | ahi_ap0uhp3x3r_f1t1, ahi_ap0uhp3x3r_f1t2                                           |
+| nsrr_ahi_hp4u        | ahi_ap0uhp5x4u_f1t1, ahi_ap0uhp5x4u_f1t2                                           |
+| nsrr_ahi_hp4u_aasm15 | ahi_ap0uhp3x4u_f1t1, ahi_ap0uhp3x4u_f1t2                                           |
+| nsrr_ahi_hp4r        | ahi_ap0uhp5x4r_f1t1,ahi_ap0uhp5x4r_f1t2, ahi_ap0uhp3x4r_f1t1, ahi_ap0uhp3x4r_f1t2  |
+| nsrr_ahi_chicago1999 | ahi_ap0uhp5x0u_ap0uhp0x3r_f1t1, ahi_ap0uhp5x0u_ap0uhp0x3r_f1t2                     |
 
 ### Total Sleep Duration
 
@@ -142,7 +180,7 @@ awake or asleep. Therefore, we’ve developed a set of standardized terms
 to address the challenges of “time”, “period”, “duration” being used
 inconsistently at the NSRR metadata documentation internally.
 
-![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 Total sleep duration (i.e., total sleep time) is defined as the interval
 between sleep onset and offset while the subject was asleep, which is an
@@ -152,12 +190,20 @@ duration and created a harmonized variable `nsrr_ttldursp_f1` in which
 `f1` refers to the source of data (i.e.,f1=polysomnography/polygraphy,
 f2=actigraphy, f3=sleep questionnaire).
 
+| Harmonized terms | Eligible NSRR tags                          |
+|------------------|---------------------------------------------|
+| nsrr_ttldursp_f1 | ttldursp_f1t1, ttldursp_f1t2, ttldursp_f1t3 |
+
 ### Overall Arousal Index
 
 Overall arousal index is defined as the total number of arousal divided
 by the total sleep duration (i.e., total sleep time). We’ve mapped all
 overall arousal index from datasets with type I/II polysomnography and
 created a harmonized variable `nsrr_phrnumar_f1`.
+
+| Harmonized terms | Eligible NSRR tags           |
+|------------------|------------------------------|
+| nsrr_phrnumar_f1 | phrnumar_f1t1, phrnumar_f1t2 |
 
 ### Sleep/Wake Signal Quality Flag
 
