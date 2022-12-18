@@ -1,0 +1,8 @@
+cff-version: 1.2.0
+authors:
+- family-names: "Zhang"
+  given-names: "Ying"
+  orcid: "https://orcid.org/0000-0003-3697-6702"
+title: "Documentation for the NSRR harmonization process"
+version: 0.1.0
+url: "https://github.com/nsrr/nsrr_data_harmonization"
