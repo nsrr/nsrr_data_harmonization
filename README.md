@@ -1,7 +1,7 @@
 An introduction to the NSRR harmonized variable documentation
 ================
 Ying Zhang
-02 December, 2022
+26 December, 2022
 
 This repository contains documentation for the phenotype, sleep
 monitoring (e.g. polysomnography, polygraphy, actigraphy) and survey
@@ -93,31 +93,33 @@ NSRR [NAP pipeline](https://zzz.bwh.harvard.edu/luna/nap/). As
 illustrated in the process diagram down below, we took an iterative
 approach when developing harmonized summary PSG terms. We first
 identified the initial target terms (e.g., AHI3%, AHI4%, total sleep
-duration, overall arousal index and sleep/wake signal quality flag). We
-then mapped out the key steps in the data generation process which tend
-to be the major sources of heterogeneity. After identifying all the
-varying components in the study-level and variable-level metadata that
-greatly affect the comparability of the data, we went back to the
-initial target terms and decided whether (and how) we would need to
-expand the target terms to accommodate all the heterogeneity. We then
-mapped the deposited data at the NSRR to the refined target terms and
-assessed if there were any additional sources of heterogeneity that
-should be accounted for. We also standardized the metadata for the
-target terms during the process which includes harmonized term
-definitions, provenance information (how to document the source data and
-any processing of the source data), as well as the standardized NSRR
-tags for “forward-compatible” harmonization.
+duration, overall arousal index and sleep/wake signal quality flag).
+Then we mapped out the key steps in the PSG data generation process
+which tend to be the major sources of heterogeneity. After identifying
+all the varying components in the study-level and variable-level
+metadata that greatly affect the comparability of PSG data, we went back
+to the initial target terms and decided whether (and how) we would need
+to modify and expand the target terms to accommodate all the
+heterogeneity. We then mapped the deposited data at the NSRR to the
+refined target terms and assessed if there were any additional sources
+of heterogeneity that should be accounted for. We also standardized the
+metadata for the target terms during the process which includes
+harmonized term definitions, provenance information (how to document the
+source data and any processing of the source data), as well as the
+standardized NSRR tags for “forward-compatible” harmonization.
 
-![](README_files/figure-gfm/unnamed-chunk-1-1.png)<!-- --> Using the
-NSRR tags, we are able to leverage data/metadata curation that we do
-routinely at NSRR to quickly map and create harmonized data. As shown in
-the diagram down below, once the raw data is curated and assigned a NSRR
-tag based on a compositional coding scheme, we can simply search if any
-of the eligible tags listed by the harmonized term(s) metadata is
-present in the dataset. Once there is a match, we will conduct an
-in-depth review of all the associated metadata to make sure the
-harmonized term(s) are mapped correctly, and create a harmonized version
-with new variable name and metadata once the mapping is confirmed.
+![](README_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
+
+Using the NSRR tags, we are able to leverage data/metadata curation that
+we do routinely at NSRR to quickly map and create new harmonized data.
+As shown in the diagram down below, once the raw data is curated and
+assigned a NSRR tag based on a compositional coding scheme we developed
+at NSRR, we can simply search if any of the eligible tags listed by the
+harmonized term(s) metadata is present in the new dataset. Once there is
+a match, we will conduct an in-depth review of all the associated
+metadata to make sure the harmonized term(s) are mapped correctly, and
+create a harmonized version with new variable name and metadata once the
+mapping is confirmed.
 
 ![](README_files/figure-gfm/unnamed-chunk-2-2.png)<!-- -->
 
@@ -164,6 +166,9 @@ are available in the metadata.
 | nsrr_ahi_hp4u_aasm15 | ahi_ap0uhp3x4u_f1t1, ahi_ap0uhp3x4u_f1t2                                           |
 | nsrr_ahi_hp4r        | ahi_ap0uhp5x4r_f1t1,ahi_ap0uhp5x4r_f1t2, ahi_ap0uhp3x4r_f1t1, ahi_ap0uhp3x4r_f1t2  |
 | nsrr_ahi_chicago1999 | ahi_ap0uhp5x0u_ap0uhp0x3r_f1t1, ahi_ap0uhp5x0u_ap0uhp0x3r_f1t2                     |
+| nsrr_rei_hp4n        | rei_ap0nhp5x4n_f1t3, rei_ap0nhp5x4n_f1t4                                           |
+| nsrr_rei_hp4n_aasm15 | rei_ap0nhp3x4n_f1t3, rei_ap0nhp3x4n_f1t4                                           |
+| nsrr_rei_hp3n        | rei_ap0nhp5x3n_f1t3, rei_ap0nhp5x3n_f1t4, rei_ap0nhp3x3n_f1t3, rei_ap0nhp3x3n_f1t4 |
 
 ### Total Sleep Duration
 
