@@ -3,19 +3,16 @@ An introduction to the NSRR harmonized variable documentation
 Ying Zhang
 26 December, 2022
 
-This repository contains documentation for the phenotype, sleep
-monitoring (e.g. polysomnography, polygraphy, actigraphy) and survey
-questionnaire data harmonized by the [National Sleep Research Resource
-(NSRR)](https://www.sleepdata.org/), including harmonization standards,
-rationale, and script for recreating the harmonized data.
+This repository contains documentation for the selected phenotype, sleep monitoring (e.g. polysomnography, polygraphy, actigraphy) and survey questionnaire data harmonized by the [National Sleep Research Resource
+(NSRR)](https://www.sleepdata.org/).The documentation includes harmonization standards, rationale, and scripts for recreating the harmonized data.
 
 ## Repository contents
 
 | file                   | description                                                                                        |
 |------------------------|----------------------------------------------------------------------------------------------------|
-| `non-sleep-phenotype/` | A directory containing documentations for harmonized non-sleep covariates.                         |
-| `sleep-monitoring/`    | A directory containing documentations and script for creating harmonized sleep monitoring data.    |
-| `sleep-questionnaire/` | A directory containing documentations and script for creating harmonized sleep questionnaire data. |
+| `non-sleep-phenotype/` | Documentation for harmonized non-sleep covariates.                                                 |
+| `sleep-monitoring/`    | Documentation and scripts for harmonizing sleep study data.                                        |
+| `sleep-questionnaire/` | Documentation and scripts for harmonizing sleep questionnaire data.                                |
 | `README.md`            | This document.                                                                                     |
 | `README.Rmd`           | Source for this document.                                                                          |
 
@@ -36,23 +33,19 @@ rationale, and script for recreating the harmonized data.
 
 ## Overview
 
-The objectives for data harmonization is (1) to identify core sleep
-terms that are semantically similar, (2) to assess the heterogeneity in
-the study-level and variable-level metadata, (3) to improve
-comparability of the harmonized terms, and (4) to make harmonized terms
-inferentially equivalent when possible. We identified three types of
-data currently shared on the NSRR website that are most likely to be
-valuable to our users once harmonized - commonly used non-sleep
-covariates, sleep monitoring data (e.g.,polysomnography/polygraphy) and
-sleep questionnaire data. We’ve developed domain-specific approach to
-address the challenges in harmonizing each of these types of data.
-Harmonized data were created using SAS and saved as a separate data file
-in each dataset on NSRR website. All SAS scripts are publicly available
-on [github.com/nsrr](https://github.com/nsrr).
+The objectives for data harmonization is (1) to identify core sleep-related
+terms that are semantically similar, (2) to assess heterogeneity in study-level
+and variable-level metadata, (3) to improve comparability of the harmonized terms,
+and (4) to ensure harmonized terms are inferentially equivalent when possible. 
+We identified three data types on the NSRR website that are most valuable harmonization
+- Commonly used non-sleep covariates
+- Sleep monitoring data (e.g.,polysomnography/polygraphy)
+- Sleep questionnaire data.
+A domain-specific approach has been developed for each data type to address harmonization challenges. 
+The harmonized data are created using SAS and saved as separate files within each NSRR dataset. 
+All SAS scripts are publicly available on  [github.com/nsrr](https://github.com/nsrr).
 
-It is worth noting that the current harmonization process is not
-data-driven but NSRR is planning on assessing how similar harmonized
-data is across demographically similar datasets.
+*Note*: The current harmonization process is primarily rule-based rather than data-driven. Future efforts will focus on evaluating the consistency of harmonized data across demographically similar datasets.
 
 ## Non-Sleep Phenotype Data
 
@@ -62,26 +55,28 @@ and [BioDataCatalyst Common Data
 Model](https://github.com/uc-cdis/gtex-dictionary/tree/master/gdcdictionary/schemas/)
 were identified as the harmonization standards for the non-sleep
 phenotype data. We have harmonized 9 non-sleep phenotype variables:
-age(`nsrr_age`), sex(`nsrr_sex`), race(`nsrr_race`),
-ethnicity(`nsrr_ethnicity`), body mass index(`nsrr_bmi`), current
-smoker(`nsrr_current_smoker`), ever smoker(`nsrr_ever_smoker`), resting
-systolic(`nsrr_bp_systolic`) and diastolic blood
-pressure(`nsrr_bp_diastolic`).
+
+- Age(`nsrr_age`)
+- Sex(`nsrr_sex`)
+- Race(`nsrr_race`)
+- Ethnicity(`nsrr_ethnicity`)
+- Body mass index(`nsrr_bmi`)
+- Current smoker(`nsrr_current_smoker`)
+- Ever smoker(`nsrr_ever_smoker`)
+- Resting systolic(`nsrr_bp_systolic`)
+- Diastolic blood pressure(`nsrr_bp_diastolic`)
 
 ### Data format
 
-The original data format was preserved for numeric variables;
-Categorical variables (e.g., sex, race) were recoded as string. All
-permissible values for the harmonized categorical variables are
-available as JSON files in `non-sleep-phenotype/`.
+- Numeric variables retain their original format.
+- Categorical variables (e.g., sex, race) are recoded as strings.
+- All permissible values for harmonized categorical variables are provided as JSON files in  `non-sleep-phenotype/`.
 
 ### Missing value
 
-For numerical variables, missing values were represented as empty cell
-value in the date files. For categorical variables, explicit missing
-codes were used to comply with the TopMED/BioDataCatalyst harmonization
-standards. Unspecific missing was coded as “not reported” for most
-categorical variables.
+- For numeric variables, missing values are represented as empty cells.
+- For categorical variables, explicit missing codes are used in line with the TOPMed/BioDataCatalyst standards.
+- Non-specific missing values are generally coded as `“not reported”`.
 
 ## Polysomnography and Polygraphy Data
 
@@ -89,8 +84,11 @@ Retrospective polysomnography/Polygraph (PSG) data harmonization focuses
 on summary PSG data submitted by the data owners, which was either
 manually scored by scorers or automatically scored by the device.
 Prospective PSG data harmonization using EDF files can be done by the
-NSRR [NAP pipeline](https://zzz.bwh.harvard.edu/luna/nap/). As
-illustrated in the process diagram down below, we took an iterative
+NSRR [NAP pipeline](https://zzz.bwh.harvard.edu/luna/nap/). 
+
+### Iterative Harmonization Process
+The NSRR tags streamline harmonization by allowing curated data to be mapped to harmonized variables through a compositional coding scheme. When tags match eligible harmonized terms, we conduct a detailed metadata review and generate the harmonized variable.
+As illustrated in the process diagram down below, we took an iterative
 approach when developing harmonized summary PSG terms. We first
 identified the initial target terms (e.g., AHI3%, AHI4%, total sleep
 duration, overall arousal index and sleep/wake signal quality flag).
@@ -127,11 +125,13 @@ mapping is confirmed.
 
 After carefully evaluating the main sources of heterogeneity in PSG data
 generation and processing across datasets, we’ve identified four varying
-components in the metadata - sleep test type (i.e., type I or II
-polysomnography, type III or IV polygraphy/home sleep apnea test), flow
-reduction, oxygen desaturation, and arousal. Here is a diagram for how
-commonly referred to as AHI3% and AHI4% can vary in the these categories
-and create many more permutations.
+components in the metadata:
+- Sleep test type (i.e., type I or II polysomnography, type III or IV polygraphy/home sleep apnea test)
+- Flow reduction criteria
+- Oxygen desaturation threshold
+- Arousals
+
+The commonly referenced AHI3% and AHI4% vary across these dimensions, resulting in multiple permutations.
 
 ![](README_files/figure-gfm/unnamed-chunk-3-3.png)<!-- --> Among the 13
 permutations of AHI3% and AHI4% as illustrated in the diagram above,
