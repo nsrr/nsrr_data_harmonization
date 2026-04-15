@@ -22,6 +22,8 @@ This repository contains documentation for the phenotype, sleep monitoring (e.g.
 | `non-sleep-phenotype/`               | A directory containing documentations for harmonized non-sleep covariates. |
 | `sleep-monitoring/` | A directory containing documentations and script for creating harmonized sleep monitoring data. |
 | `sleep-questionnaire/`            |  A directory containing documentations and script for creating harmonized sleep questionnaire data.  |
+| `harmonized_variables/variables/`  | A directory containing JSON objects for NSRR harmonized variables. |
+| `harmonized_variables/domains/`  | A directory containing JSON objects of coded values for categorical harmonized variables. |
 | `README.md`  | This document. |
 | `README.Rmd`  | Source for this document. |
 
