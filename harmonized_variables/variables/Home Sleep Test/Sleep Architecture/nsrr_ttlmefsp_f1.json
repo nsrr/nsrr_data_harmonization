@@ -1,0 +1,12 @@
+{
+  "id": "nsrr_ttlmefsp_f1",
+  "display_name": "Sleep Maintenance Efficiency: the proportion of estimated sleep duration in sleep period (i.e., interval between sleep onset and offset) from home sleep apnea test",
+  "description": "Harmonized by the NSRR team. Source:",
+  "type": "numeric",
+  "units": "percent (%)",
+  "labels": [
+    "ttlmefsp_f1t3",
+    "ttlmefsp_f1t4"
+  ],
+  "commonly_used": true
+}

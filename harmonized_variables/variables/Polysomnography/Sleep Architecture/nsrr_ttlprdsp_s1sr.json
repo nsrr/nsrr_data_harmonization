@@ -1,0 +1,12 @@
+{
+  "id": "nsrr_ttlprdsp_s1sr",
+  "display_name": "REM Sleep Latency: the interval between the first sleep epoch and REM sleep including wake",
+  "description": "Harmonized by the NSRR team. Source:",
+  "type": "numeric",
+  "units": "minutes (min)",
+  "labels": [
+    "ttlprdsp_s1sr_f1t1",
+    "ttlprdsp_s1sr_f1t2"
+  ],
+  "commonly_used": true
+}

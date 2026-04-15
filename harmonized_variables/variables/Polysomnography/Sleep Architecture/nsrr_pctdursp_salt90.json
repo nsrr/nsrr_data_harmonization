@@ -1,0 +1,13 @@
+{
+  "id": "nsrr_pctdursp_salt90",
+  "display_name": "Percentage of sleep time < 90% oxygen saturation",
+  "description": "Harmonized by the NSRR team. Source:",
+  "type": "numeric",
+  "units": "percent (%)",
+  "labels": [
+    "pctdursp_sale90_f1t1",
+    "pctdursp_sale90_f1t2",
+    "pctdursp_sale90_f1t3"
+  ],
+  "commonly_used": true
+}

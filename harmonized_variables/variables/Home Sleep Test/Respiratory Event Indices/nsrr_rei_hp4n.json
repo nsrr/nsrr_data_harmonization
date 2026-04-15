@@ -1,0 +1,12 @@
+{
+  "id": "nsrr_rei_hp4n",
+  "display_name": "Respiratory Event Index : (All apneas + hypopneas with >=50% nasal cannula [or alternative sensor] reduction with >= 4% oxygen desaturation) / hour of estimated sleep",
+  "description": "Harmonized by the NSRR team. <br><br>Data collected with no EEGs. Refer to the source for detailed definition for respiratory events:",
+  "type": "numeric",
+  "units": "number of events per hour",
+  "labels": [
+    "rei_ap0nhp5x4n_f1t3",
+    "rei_ap0nhp5x4n_f1t4"
+  ],
+  "commonly_used": true
+}

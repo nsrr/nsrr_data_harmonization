@@ -1,0 +1,14 @@
+{
+  "id": "nsrr_endtimbd_f1",
+  "display_name": "Lights-on or out-bed clock time from polysomnography",
+  "description": "Conventionally, this variable would be called the end of time in bed (TIB).<br><br>Harmonized by the NSRR team. Source:",
+  "type": "time",
+  "units": "hh:mm:ss",
+  "labels": [
+    "endtimbd_f1t1",
+    "endtimbd_f1t2",
+    "endtimbd_f1t3",
+    "endtimbd_f1t4"
+  ],
+  "commonly_used": true
+}

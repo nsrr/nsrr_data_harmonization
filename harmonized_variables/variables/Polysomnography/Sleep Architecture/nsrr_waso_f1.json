@@ -1,0 +1,13 @@
+{
+  "id": "nsrr_waso_f1",
+  "display_name": "Wake After Sleep Onset: the total duration being awake between sleep onset and lights-on/out-bed time from polysomnography",
+  "description": "Harmonized by the NSRR team. Source:",
+  "type": "numeric",
+  "units": "minutes (min)",
+  "labels": [
+    "ttldurws_f1t1",
+    "waso",
+    "ttldurws_f1t2"
+  ],
+  "commonly_used": true
+}

@@ -1,0 +1,13 @@
+{
+  "id": "nsrr_ahi_chicago1999",
+  "display_name": "Apnea-Hypopnea Index: (All apneas + hypopneas with >50% flow reduction or discernible flow reduction with >=3% desat or arousal) / hour of sleep",
+  "description": "Harmonized by the NSRR team.<br><br>The definition of hypopnea events is consistent with the following clinical guidelines: American Academy of Sleep Medicine (AASM) Chicago 1999 standard. [Sleep 1999 (PubMed ID:10450601)]( https://www.ncbi.nlm.nih.gov/pubmed/10450601) <br><br> [Search for all AHI variables consistent with the same clinical guidelines within this dataset](https://sleepdata.org/datasets/apples/variables?search=chicago1999)<br><br> Refer to the source for detailed definition for respiratory events:",
+  "type": "numeric",
+  "units": "events per hour",
+  "labels": [
+    "ahi_ap0uhp5x0u_ap0uhp3x3r_f1t1",
+    "ahi_ap0uhp5x0u_ap0uhp0x3r_f1t2",
+    "chicago1999"
+  ],
+  "commonly_used": true
+}

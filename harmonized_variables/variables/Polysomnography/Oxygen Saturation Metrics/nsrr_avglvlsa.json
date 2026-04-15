@@ -1,0 +1,14 @@
+{
+  "id": "nsrr_avglvlsa",
+  "display_name": "Average oxygen saturation in sleep",
+  "description": "Harmonized by the NSRR team. Source:",
+  "type": "numeric",
+  "units": "percent (%)",
+  "labels": [
+    "avglvlsa_f1t1",
+    "avglvlsa_f1t2",
+    "avglvlsa_f1t3",
+    "avglvlsa_f1t4"
+  ],
+  "commonly_used": true
+}

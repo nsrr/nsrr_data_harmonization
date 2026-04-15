@@ -1,0 +1,14 @@
+{
+  "id": "nsrr_ahi_hp3u",
+  "display_name": "Apnea-Hypopnea Index : (All apneas + hypopneas with >= 3% oxygen desaturation) / hour of sleep ",
+  "description": "Harmonized by the NSRR team. Refer to the source for detailed definition for respiratory events:",
+  "type": "numeric",
+  "units": "number of events per hour",
+  "labels": [
+    "ahi_ap0uhp5x3u_f1t1",
+    "ahi_ap0uhp5x3u_f1t2",
+    "ahi_ap0uhp3x3u_f1t1",
+    "ahi_ap0uhp3x3u_f1t2"
+  ],
+  "commonly_used": true
+}
